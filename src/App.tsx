@@ -1,25 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
+import { Route, Routes, Navigate } from "react-router-dom";
 import './App.css';
+import { Home } from "./pages/home";
+import { Admin } from "./pages/admin";
+import { Contact } from "./pages/contact";
+import { Track } from "./pages/track";
+import { Dashboard } from "./pages/dashboard";
+import { NotFound } from "./pages/notfound"
+
 
 function App() {
+  const [user, setUser] = useState<any>(null);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <Routes>
+              <Route path="/" element={<Home />} />
+              <Route
+                  path="/contact"
+                  element={<Contact />}
+              />
+              <Route
+                  path="/track"
+                  element={<Track />}
+              />
+              <Route
+                  path="/dashboard"
+                  element={user ? <Dashboard /> : <Navigate to="../admin" />}
+              />
+              <Route
+                  path="/admin"
+                  element={user ? <Navigate to="../" /> : <Admin />}
+              />
+              <Route path="*" element={<NotFound />} />
+          </Routes>
   );
 }
 
