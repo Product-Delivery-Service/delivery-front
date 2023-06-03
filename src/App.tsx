@@ -4,9 +4,11 @@ import './App.css';
 import { Home } from "./pages/home";
 import { Admin } from "./pages/admin";
 import { Contact } from "./pages/contact";
-import { Track } from "./pages/track";
 import { Dashboard } from "./pages/dashboard";
 import { NotFound } from "./pages/notfound"
+import UpdateShipment from './pages/updateshipment';
+import TrackShipment from './pages/trackshipment';
+
 
 
 function App() {
@@ -20,8 +22,8 @@ function App() {
                   element={<Contact />}
               />
               <Route
-                  path="/track"
-                  element={<Track />}
+                  path="/trackshipment"
+                  element={<TrackShipment />}
               />
               <Route
                   path="/dashboard"
@@ -30,6 +32,10 @@ function App() {
               <Route
                   path="/admin"
                   element={user ? <Navigate to="../" /> : <Admin />}
+              />
+              <Route
+                  path="/updateshipment"
+                  element={user ? <Navigate to="../" /> : < UpdateShipment/>}
               />
               <Route path="*" element={<NotFound />} />
           </Routes>
