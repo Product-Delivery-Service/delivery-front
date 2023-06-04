@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Paper } from '@mui/material';
 import { styled } from '@mui/system';
+import axios from "axios"
 
 const StyledContainer = styled('div')({
   display: 'flex',
@@ -52,7 +53,8 @@ const StyledButton = styled(Button)({
 });
 
 const ContactPage = () => {
-
+  
+  const API = axios.create({ baseURL: process.env.REACT_APP_MY_API });
 
   const [formData, setFormData] = useState({
     fullname: '',
@@ -82,7 +84,7 @@ const ContactPage = () => {
     return phoneRegex.test(phoneNumber);
   };
 
-  const handleSubmit = (e: { preventDefault: () => void; }) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
   
     setFormErrors({
@@ -112,7 +114,12 @@ const ContactPage = () => {
       return;
     }
   
-    // Send form data to the server for further handling
+    try {
+      const response = await API.post("/message", formData);
+        console.log("res", response);
+      } catch (error: any) {
+        console.log("err", error);
+      }
     console.log(formData);
   };
 

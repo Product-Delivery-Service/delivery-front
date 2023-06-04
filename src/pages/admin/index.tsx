@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Paper } from '@mui/material';
 import { styled } from '@mui/system';
+import axios from "axios"
+import { useNavigate } from "react-router-dom";
 
 const StyledContainer = styled('div')({
   display: 'flex',
@@ -52,6 +54,8 @@ const StyledButton = styled(Button)({
 });
 
 const Admin = () => {
+  const API = axios.create({ baseURL: process.env.REACT_APP_MY_API });
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState(false);
@@ -63,7 +67,7 @@ const Admin = () => {
     return emailRegex.test(email);
   };
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
     setEmailError(false);
     setPasswordError(false);
 
@@ -78,8 +82,18 @@ const Admin = () => {
       return;
     }
 
+    
     console.log("Email:", email);
     console.log("Password:", password);
+    // navigate('/dashboard', { replace: true });
+    try {
+      console.log("hfdj")
+      const response = await API.post("/auth/login", {email, password}, { withCredentials: true });
+      console.log("res", response);
+      navigate("/dashboard", { replace: true });
+      } catch (error: any) {
+        console.log("err", error);
+      }
   };
 
   return (

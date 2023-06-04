@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { TextField, Button, Stepper, Step, StepLabel, Container, Grid, Box } from '@mui/material';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form } from 'formik';
 import * as yup from 'yup';
 import { format } from 'date-fns';
+import axios from "axios"
+import { Link } from "react-router-dom";
 
 interface FormData {
   senderName: string;
@@ -19,7 +21,6 @@ interface FormData {
   shipmentPrice: number | string;
   shipmentWeight: number | string;
   shipmentService: string;
-  trackingCode: string;
 }
 
 const validationSchema = yup.object().shape({
@@ -43,10 +44,10 @@ const validationSchema = yup.object().shape({
   shipmentPrice: yup.string().required('Package Price is required'),
   shipmentWeight: yup.string().required('Package Weight is required'),
   shipmentService: yup.string().required('Service Type is required'),
-  trackingCode: yup.string().required('Tracking Code is required'),
 });
 
 const MultiStepForm: React.FC = () => {
+  const API = axios.create({ baseURL: process.env.REACT_APP_MY_API });
   const initialValues: FormData = {
     senderName: '',
     senderAddress: '',
@@ -57,26 +58,33 @@ const MultiStepForm: React.FC = () => {
     receiverName: '',
     receiverEmail: '',
     shipmentDate: new Date(),
-    shipmentCount: 0,
+    shipmentCount: 1,
     shipmentValue: '',
     shipmentPrice: '',
     shipmentWeight: '',
     shipmentService: '',
-    trackingCode: '',
   };
 
   const steps = [
     'Sender Information',
     'Receiver Information',
     'Shipment Details',
-    'Confirmation',
+    'Finish',
   ];
 
   const [activeStep, setActiveStep] = useState(0);
 
-  const handleSubmit = (values: FormData) => {
-    alert('Form submitted successfully!');
-    // Add your form submission logic here
+  const [trackingCode, setTrackingCode] = useState("")
+
+  const handleSubmit = async (values: FormData) => {
+    console.log(values)
+    try {
+      const response = await API.post("/command", values, { withCredentials: true });
+        console.log("res", response);
+        setTrackingCode(response.data.data.trackingCode)
+      } catch (error: any) {
+        console.log("err", error);
+      }
   };
 
   const getStepContent = (
@@ -244,7 +252,7 @@ const MultiStepForm: React.FC = () => {
             <Grid item xs={12}>
               <TextField
                 name="shipmentPrice"
-                label="Package Price"
+                label="Shipment Price"
                 value={values.shipmentPrice}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -282,19 +290,26 @@ const MultiStepForm: React.FC = () => {
       case 3:
         return (
           <>
-            <Grid item xs={12}>
-              <TextField
-                name="trackingCode"
-                label="Tracking Code"
-                value={values.trackingCode}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={touched.trackingCode && !!errors.trackingCode}
-                helperText={touched.trackingCode && errors.trackingCode}
-                fullWidth
-              />
-            </Grid>
-            {/* Add other fields for Confirmation */}
+            <Box style={{ display:"flex", justifyContent: "center", alignItems: "center", flexDirection: "column", width: "100%"}} textAlign="center">
+              <h2>Form submitted successfully!
+                <br/>
+                Here is Your Tracking Code:
+              </h2>
+              <h1 style={{marginTop: '-10px', color: "green"}}>{trackingCode}</h1>
+              <Box>
+              <Button style={{marginRight: "50px"}} variant="contained" color="primary" onClick={() => navigator.clipboard.writeText(trackingCode)}>
+                Copy Code
+              </Button>
+              <Link to="/track">
+              <Button style={{marginRight: "50px"}} variant="outlined" color="primary">
+                Track Shipment
+              </Button>
+              </Link>
+              <Button variant="outlined" color="primary" onClick={() => setActiveStep(0)}>
+                Reset
+              </Button>
+              </Box>
+            </Box>
           </>
         );
       default:
@@ -303,7 +318,7 @@ const MultiStepForm: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="sm">
+    <Container style={{ display:"flex", justifyContent: "center", alignItems: "center", height:"100vh"}} maxWidth="sm">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -320,18 +335,14 @@ const MultiStepForm: React.FC = () => {
               ))}
             </Stepper>
             <Box mt={3}>
-              {activeStep === steps.length ? (
-                <Box textAlign="center">
-                  <h2>Form submitted successfully!</h2>
-                  <Button variant="contained" color="primary" onClick={() => setActiveStep(0)}>
-                    Reset
-                  </Button>
-                </Box>
-              ) : (
+              
                 <Box>
                   <Grid container spacing={2}>
                     {getStepContent(activeStep, handleChange, handleBlur, values, errors, touched)}
                   </Grid>
+                  {activeStep === steps.length -1 ? (
+                null
+              ) : (
                   <Box mt={2} display="flex" justifyContent="space-between">
                     <Button
                       variant="outlined"
@@ -344,15 +355,20 @@ const MultiStepForm: React.FC = () => {
                     <Button
                       variant="contained"
                       color="primary"
-                      type="submit"
+                      type={activeStep === steps.length - 2 ? 'submit' : 'button'}
                       disabled={!values.shipmentService && activeStep === steps.length - 1}
-                      onClick={() => setActiveStep((prev) => prev + 1)}
+                      onClick={() => {
+                        setActiveStep((prev) => prev + 1)
+                        if(activeStep === steps.length - 2) {
+                          handleSubmit(values)
+                        }
+                      }}
                     >
-                      {activeStep === steps.length - 1 ? 'Submit' : 'Next'}
+                      {activeStep === steps.length - 2 ? 'Submit' : 'Next'}
                     </Button>
                   </Box>
-                </Box>
               )}
+                </Box>
             </Box>
           </Form>
         )}
