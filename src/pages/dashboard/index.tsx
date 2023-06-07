@@ -1,111 +1,111 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { AiOutlineHome } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
+import axios from "axios"
 
 interface Message {
   id: number;
   fullName: string;
   phoneNumber: string;
+  email: string;
   trackingCode: string;
   message: string;
 }
 
 interface Shipment {
   id: number;
-  date: string;
-  name: string;
-  service: string;
+  shipmentDate: string;
+  shipmentName: string;
+  shipmentService: string;
   trackingCode: string;
-  state: string;
+  shipmentState: string;
 }
-
-const messagesData: Message[] = [
-  {
-    id: 1,
-    fullName: "John Doe",
-    phoneNumber: "1234567890",
-    trackingCode: "ABC123",
-    message: "Hello, I have a question.",
-  },
-  {
-    id: 2,
-    fullName: "Jane Smith",
-    phoneNumber: "9876543210",
-    trackingCode: "DEF456",
-    message: "Need assistance with my order.",
-  },
-];
-
-const shipmentsData: Shipment[] = [
-  {
-    id: 1,
-    date: "2023-06-01",
-    name: "Product A",
-    service: "Standard Shipping",
-    trackingCode: "SHIP123",
-    state: "Shipment Created",
-  },
-  {
-    id: 2,
-    date: "2023-05-30",
-    name: "Product B",
-    service: "Express Shipping",
-    trackingCode: "SHIP456",
-    state: "Out for Delivery",
-  },
-];
 
 
 const Dashboard: React.FC = () => {
+  const API = axios.create({ baseURL: process.env.REACT_APP_MY_API });
 
   const navigate = useNavigate();
 
   const handleGoBack: () => void = () => {
     navigate('/');
   };
-  
-  // const handleGoBack = () => {
-  //   navigate('/');
-  // };
 
-  const [currentButton, setCurrentButton] = useState<string>('');
+  const [currentButton, setCurrentButton] = useState<string>('Shipments');
   const [tableData, setTableData] = useState<Array<Message | Shipment>>([]);
 
 
   const handleButtonClick = (buttonName: string) => {
+    console.log(buttonName)
     setCurrentButton(buttonName);
     // Set the static data based on the button clicked
     if (buttonName === 'Messages') {
-      setTableData(messagesData);
+      // setTableData(messagesData);
+      getMessages()
+
     } else if (buttonName === 'Shipments') {
-      setTableData(shipmentsData);
+      // setTableData(shipmentsData);
+      getShipments()
     }
   };
 
   const handleStateChange = (shipmentId: number, newState: string) => {
+    console.log(newState)
     // Update the state of the selected shipment in the tableData state
     const updatedTableData = tableData.map((item: Message | Shipment) => {
-      if ('state' in item && item.id === shipmentId) {
-        return { ...item, state: newState } as Shipment;
+      if ('shipmentState' in item && item.id === shipmentId) {
+        return { ...item, shipmentState: newState } as Shipment;
       }
       return item;
     });
+    console.log(updatedTableData)
     setTableData(updatedTableData);
   };
   
-  const handleEditSubmit = (shipmentId: number) => {
+  const handleEditSubmit = async (shipmentId: number) => {
     // Send the updated shipment object to the backend
     const updatedShipment = tableData.find((item: Message | Shipment) => {
-      return 'state' in item && item.id === shipmentId;
+      return 'shipmentState' in item && item.id === shipmentId;
     }) as Shipment | undefined;
   
     if (updatedShipment) {
       // Make API call to update the shipment with the updatedShipment object
+      try {
+        const response = await API.post("/command/update", {shipmentState: updatedShipment.shipmentState, id: shipmentId});
+          console.log("res", response);
+        } catch (error: any) {
+          console.log("err", error);
+        }
     }
   };
-  
+
+  const getShipments = async () =>{
+    console.log("shipment")
+    try {
+      const response = await API.get("/command", {withCredentials: true});
+        console.log("res", response);
+        setTableData(response.data.data);
+      } catch (error: any) {
+        console.log("err", error);
+      }
+  }
+
+  const getMessages = async () =>{
+    try {
+      const response = await API.get("/message", {withCredentials: true});
+        console.log("res", response);
+        setTableData(response.data.data);
+      } catch (error: any) {
+        console.log("err", error);
+      }
+  }
+
+  useEffect(() => {
+    getShipments()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const renderTable = () => {
     if (currentButton === 'Messages') {
@@ -116,6 +116,7 @@ const Dashboard: React.FC = () => {
               <TableCell>ID</TableCell>
               <TableCell>Full Name</TableCell>
               <TableCell>Phone Number</TableCell>
+              <TableCell>Email</TableCell>
               <TableCell>Tracking Code</TableCell>
               <TableCell>Message</TableCell>
             </TableRow>
@@ -126,6 +127,7 @@ const Dashboard: React.FC = () => {
                 <TableCell>{message.id}</TableCell>
                 <TableCell>{message.fullName}</TableCell>
                 <TableCell>{message.phoneNumber}</TableCell>
+                <TableCell>{message.email}</TableCell>
                 <TableCell>{message.trackingCode}</TableCell>
                 <TableCell>{message.message}</TableCell>
               </TableRow>
@@ -152,14 +154,14 @@ const Dashboard: React.FC = () => {
             {(tableData as Shipment[]).map((shipment: Shipment) => (
               <TableRow key={shipment.id}>
                 <TableCell>{shipment.id}</TableCell>
-                <TableCell>{shipment.date}</TableCell>
-                <TableCell>{shipment.name}</TableCell>
-                <TableCell>{shipment.service}</TableCell>
+                <TableCell>{shipment.shipmentDate?.toString()?.substring(0,10) + "  " + shipment.shipmentDate?.toString()?.substring(11,16)}</TableCell>
+                <TableCell>{shipment.shipmentName}</TableCell>
+                <TableCell>{shipment.shipmentService}</TableCell>
                 <TableCell>{shipment.trackingCode}</TableCell>
-                <TableCell>{shipment.state}</TableCell>
+                <TableCell>{shipment.shipmentState}</TableCell>
                 <TableCell>
                   <select
-                    value={shipment.state}
+                    value={shipment.shipmentState}
                     onChange={(e) => handleStateChange(shipment.id, e.target.value)}
                   >
                     <option value="Shipment Created">Shipment Created</option>
@@ -209,11 +211,11 @@ const Dashboard: React.FC = () => {
           </Button>
         </div>
         <div className="button-container">
-          <Button variant="contained" color="primary" onClick={() => handleButtonClick('Messages')}>
-            Messages
-          </Button>
           <Button variant="contained" color="primary" onClick={() => handleButtonClick('Shipments')}>
             Shipments
+          </Button>
+          <Button variant="contained" color="primary" onClick={() => handleButtonClick('Messages')}>
+            Messages
           </Button>
         </div>
         <div className="table-container">

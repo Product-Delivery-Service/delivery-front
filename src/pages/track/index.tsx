@@ -11,38 +11,35 @@ import { Grid, Container, TextField, Button, Typography } from '@mui/material';
 // import TimelineContent from '@mui/lab/TimelineContent';
 // import TimelineDot from '@mui/lab/TimelineDot';
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@mui/lab';
+import axios from "axios"
 
 import './Track.css';
 
 interface Shipment {
   shipmentName: string;
   trackingCode: string;
-  shipmentStatus: string;
+  shipmentState: string;
 }
 
 const Track: React.FC = () => {
+  const API = axios.create({ baseURL: process.env.REACT_APP_MY_API });
   const navigate = useNavigate();
   const [trackingCode, setTrackingCode] = useState('');
   const [shipment, setShipment] = useState<Shipment | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleTrack = () => {
-    // Here, you would make an API request to the backend with the tracking code and update the shipment state accordingly
-    // For now, let's use a static example for testing
-
-    const staticData: Shipment = {
-      shipmentName: 'Air Jordans 3',
-      trackingCode: "23",
-      shipmentStatus: 'Delivered',
-    };
-
-    if (staticData.trackingCode === trackingCode) {
-      setShipment(staticData);
-      setErrorMessage('');
-    } else {
-      setShipment(null);
+  const handleTrack = async () => {
+    
+    try {
+      const response = await API.post("/command/trackingCode", {trackingCode});
+        console.log("res", response);
+        setShipment(response.data.data);
+      } catch (error: any) {
+        console.log("err", error);
+        setShipment(null);
       setErrorMessage('No such Shipment exists.');
-    }
+      }
+
   };
 
   return (
@@ -114,7 +111,7 @@ const Track: React.FC = () => {
     <TimelineContent>Shipment Created</TimelineContent>
   </TimelineItem>
 
-  {shipment.shipmentStatus !== 'Shipment Created' && (
+  {shipment.shipmentState !== 'Shipment Created' && (
     <TimelineItem>
       <TimelineSeparator>
         <TimelineDot />
@@ -124,7 +121,7 @@ const Track: React.FC = () => {
     </TimelineItem>
   )}
 
-  {shipment.shipmentStatus !== 'Shipment Created' && shipment.shipmentStatus !== 'In Transit' && (
+  {shipment.shipmentState !== 'Shipment Created' && shipment.shipmentState !== 'In Transit' && (
     <TimelineItem>
       <TimelineSeparator>
         <TimelineDot />
@@ -134,7 +131,7 @@ const Track: React.FC = () => {
     </TimelineItem>
   )}
 
-  {shipment.shipmentStatus !== 'Shipment Created' && shipment.shipmentStatus !== 'In Transit' && shipment.shipmentStatus !== 'At Company’s Facility' && (
+  {shipment.shipmentState !== 'Shipment Created' && shipment.shipmentState !== 'In Transit' && shipment.shipmentState !== 'At Company\'s Facility' && (
     <TimelineItem>
       <TimelineSeparator>
         <TimelineDot />
@@ -144,7 +141,7 @@ const Track: React.FC = () => {
     </TimelineItem>
   )}
 
-  {shipment.shipmentStatus !== 'Shipment Created' && shipment.shipmentStatus !== 'In Transit' && shipment.shipmentStatus !== 'At Company’s Facility' && shipment.shipmentStatus !== 'Out for Delivery' && (
+  {shipment.shipmentState !== 'Shipment Created' && shipment.shipmentState !== 'In Transit' && shipment.shipmentState !== 'At Company\'s Facility' && shipment.shipmentState !== 'Out for Delivery' && (
     <TimelineItem>
       <TimelineSeparator>
         <TimelineDot />

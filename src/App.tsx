@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import './App.css';
 import Admin from "./pages/admin"
 import  Dashboard  from "./pages/dashboard";
-import { NotFound } from "./pages/notfound"
+import NotFound  from "./pages/notfound"
 import Contact from "./pages/contact"
 import ShipmentDetails from "./pages/ShipmentDetails"
 
@@ -55,12 +55,6 @@ function App() {
                   path="/dashboard"
                   element={<Dashboard />}
               />
-              {/* <Route
-                  path="/dashboard"
-                  element={<Dashboard />}
-              />
-                  element={user ? <Dashboard /> : <Navigate to="../admin" />}
-              /> */}
               <Route
                   path="/admin"
                   element={<Admin />}

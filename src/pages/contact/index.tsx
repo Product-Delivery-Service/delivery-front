@@ -57,7 +57,7 @@ const ContactPage = () => {
   const API = axios.create({ baseURL: process.env.REACT_APP_MY_API });
 
   const [formData, setFormData] = useState({
-    fullname: '',
+    fullName: '',
     email: '',
     phoneNumber: '',
     trackingCode: '',
@@ -65,7 +65,7 @@ const ContactPage = () => {
   });
 
   const [formErrors, setFormErrors] = useState({
-    fullnameError: false,
+    fullNameError: false,
     emailError: false,
     phoneNumberError: false,
   });
@@ -88,15 +88,15 @@ const ContactPage = () => {
     e.preventDefault();
   
     setFormErrors({
-      fullnameError: false,
+      fullNameError: false,
       emailError: false,
       phoneNumberError: false
     });
   
     let hasErrors = false;
   
-    if (formData.fullname.trim() === '') {
-      setFormErrors((prevErrors) => ({ ...prevErrors, fullnameError: true }));
+    if (formData.fullName.trim() === '') {
+      setFormErrors((prevErrors) => ({ ...prevErrors, fullNameError: true }));
       hasErrors = true;
     }
   
@@ -129,14 +129,14 @@ const ContactPage = () => {
         <StyledTitle variant="h4">Contact</StyledTitle>
         <StyledForm onSubmit={handleSubmit}>
           <StyledTextField
-            id="fullname"
-            name="fullname"
+            id="fullName"
+            name="fullName"
             label="Full Name"
             variant="outlined"
-            value={formData.fullname}
+            value={formData.fullName}
             onChange={handleInputChange}
-            error={formErrors.fullnameError}
-            helperText={formErrors.fullnameError && 'Please enter your full name'}
+            error={formErrors.fullNameError}
+            helperText={formErrors.fullNameError && 'Please enter your full name'}
           />
           <StyledTextField
             id="email"

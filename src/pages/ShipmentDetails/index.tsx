@@ -17,6 +17,7 @@ interface FormData {
   receiverEmail: string;
   shipmentDate: Date;
   shipmentCount: number;
+  shipmentName: string;
   shipmentValue: number | string;
   shipmentPrice: number | string;
   shipmentWeight: number | string;
@@ -39,6 +40,7 @@ const validationSchema = yup.object().shape({
     .required('Receiver Phone is required'),
   receiverEmail: yup.string().email('Invalid email address').required('Receiver Email is required'),
   shipmentDate: yup.date().required('Shipment Date is required'),
+  shipmentName: yup.string().required('Service Name is required'),
   shipmentCount: yup.number().required('Package Count is required'),
   shipmentValue: yup.string().required('Package Value is required'),
   shipmentPrice: yup.string().required('Package Price is required'),
@@ -58,6 +60,7 @@ const MultiStepForm: React.FC = () => {
     receiverName: '',
     receiverEmail: '',
     shipmentDate: new Date(),
+    shipmentName: '',
     shipmentCount: 1,
     shipmentValue: '',
     shipmentPrice: '',
@@ -224,6 +227,19 @@ const MultiStepForm: React.FC = () => {
               />
             </Grid>
             {/* Add other fields for Shipment Details */}
+            <Grid item xs={12}>
+              <TextField
+                name="shipmentName"
+                label="Shipment Name"
+                type="name"
+                value={values.shipmentName}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.shipmentName && !!errors.shipmentName}
+                helperText={touched.shipmentName && errors.shipmentName}
+                fullWidth
+              />
+            </Grid>
             <Grid item xs={12}>
               <TextField
                 name="shipmentCount"
