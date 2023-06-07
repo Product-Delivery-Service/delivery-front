@@ -1,0 +1,56 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .purple-container {
+    background-color: #42a5f5;
+    color: white;
+    padding: 40px;
+    border-radius: 4px;
+    text-align: center;
+    margin-bottom: 10px;
+    width: 80%;
+  }
+  
+  .white-text {
+    color: white;
+  }
+  
+  .blue-container {
+    background-color: transparent;
+    padding: 20px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.white-input {
+  color: white;
+  width: 100%; /* Set the width to 100% to make the input field wider */
+}
+
+  .track-button {
+    background-color: #42a5f5;
+    color: white;
+    height: 50px; /* Set the height to match the input field */
+    width: 60%; /* Adjust the width as desired */
+  }
+  
+  
+  .home-button {
+    position: absolute;
+    top: 20px;
+    left: -360px; /* Adjust the left position as desired */
+  }
+  
+  .icon {
+    font-size: 80px;
+  }
+  

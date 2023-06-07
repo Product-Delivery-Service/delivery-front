@@ -2,11 +2,14 @@ import React from 'react';
 import { Route, Routes } from "react-router-dom";
 import './App.css';
 import Admin from "./pages/admin"
-import { Track } from "./pages/track";
-import { Dashboard } from "./pages/dashboard";
+import  Dashboard  from "./pages/dashboard";
 import { NotFound } from "./pages/notfound"
 import Contact from "./pages/contact"
 import ShipmentDetails from "./pages/ShipmentDetails"
+
+import UpdateShipment from './pages/updateshipment';
+import TrackShipment from './pages/trackshipment';
+import Track from './pages/track';
 
 
 
@@ -41,6 +44,10 @@ function App() {
                   element={<Contact />}
               />
               <Route
+                  path="/trackshipment"
+                  element={<TrackShipment />}
+              />
+              <Route
                   path="/track"
                   element={<Track />}
               />
@@ -48,9 +55,19 @@ function App() {
                   path="/dashboard"
                   element={<Dashboard />}
               />
+              {/* <Route
+                  path="/dashboard"
+                  element={<Dashboard />}
+              />
+                  element={user ? <Dashboard /> : <Navigate to="../admin" />}
+              /> */}
               <Route
                   path="/admin"
                   element={<Admin />}
+              />
+              <Route
+                  path="/updateshipment"
+                  element={< UpdateShipment/>}
               />
               <Route path="*" element={<NotFound />} />
           </Routes>

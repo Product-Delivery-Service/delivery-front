@@ -1,0 +1,26 @@
+.dashboard-container {
+    display: block;
+    position: relative;
+    height: 100vh;
+    text-align: center;
+  }
+  
+  .button-container {
+    margin-bottom: 20px;
+  }
+  
+  .button-container > button {
+    margin-right: 10px;
+  }
+  
+  .table-container {
+    width: 80%;
+    margin: 0 auto;
+  }
+  
+  .home-button {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+  }
+  

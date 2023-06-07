@@ -1,0 +1,73 @@
+.track-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: auto;
+  }
+  .home-container {
+  /* Add the following styles */
+  /* position: sticky; */
+  display: flex;
+  /* top: 0; */
+  /* left: 10px; */
+  /* margin-left: 300px; */
+  z-index: 1;
+  background-color: rgb(255, 255, 255);
+}
+  .back-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 20px;
+    background-color: white; /* Add this line */
+    color: #000; /* Add this line to set the text color */
+    margin-left: 50px; /* Adjust the margin-left value to move the button slightly to the right */
+    justify-content: flex-end; 
+  }
+  
+  .back-icon {
+    margin-right: 10px;
+  }
+  
+  .track-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .track-icon {
+    margin-right: 10px;
+    color: white;
+  }
+  
+  .track-text {
+    color: white;
+  }
+  
+  .track-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .track-button {
+    margin-top: 10px;
+    height: 56px;
+    color: white;
+    background-color: #42a5f5;
+  }
+  
+  .track-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+  }
+  
+  .error-message {
+    color: red;
+  }
+  
