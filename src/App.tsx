@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import './App.css';
 import Admin from "./pages/admin"
 import  Dashboard  from "./pages/dashboard";
-import { NotFound } from "./pages/notfound"
+import  NotFound  from "./pages/notfound"
 import Contact from "./pages/contact"
 import ShipmentDetails from "./pages/ShipmentDetails"
 
