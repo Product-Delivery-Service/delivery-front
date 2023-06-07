@@ -60,7 +60,7 @@ const Track: React.FC = () => {
       </div>
       </Container> */}
 
-      <Container maxWidth="xs" className="home-container" style={{ position: 'absolute', top: 0, left: 0 }}>
+      <Container  className="home-container" >
         <div className="back-container" onClick={() => navigate('/')}>
           {/* <span className="back-icon"> <AiOutlineHome /> </span> <span className="back-text">Back to home</span> */}
           <Button variant="outlined" color="primary" onClick={() => navigate('/')} className="home-button">

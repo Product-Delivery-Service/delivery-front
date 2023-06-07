@@ -8,17 +8,23 @@
   }
   .home-container {
   /* Add the following styles */
-  position: sticky;
-  top: 0;
-  left: 0;
+  /* position: sticky; */
+  display: flex;
+  /* top: 0; */
+  /* left: 10px; */
+  /* margin-left: 300px; */
   z-index: 1;
-  background-color: white;
+  background-color: rgb(255, 255, 255);
 }
   .back-container {
     display: flex;
     align-items: center;
     cursor: pointer;
     margin-bottom: 20px;
+    background-color: white; /* Add this line */
+    color: #000; /* Add this line to set the text color */
+    margin-left: 50px; /* Adjust the margin-left value to move the button slightly to the right */
+    justify-content: flex-end; 
   }
   
   .back-icon {
