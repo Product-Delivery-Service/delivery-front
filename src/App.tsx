@@ -39,11 +39,11 @@ function App() {
   return (
           <Routes>
             <Route
-                  path="/homepage"
+                  path="/"
                   element={< HomePage/>}
               />
 
-              <Route path="/" element={<ShipmentDetails/>} />
+              <Route path="/createshipment" element={<ShipmentDetails/>} />
 
               <Route
                   path="/contact"

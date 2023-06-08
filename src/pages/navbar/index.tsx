@@ -89,7 +89,7 @@ const Navbar = () => {
     <AppBar position="static" color="primary">
       <Toolbar sx={{ justifyContent: 'space-between' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Button component={RouterLink} to="/homepage" color="inherit">
+          <Button component={RouterLink} to="/" color="inherit">
             <IconButton color="inherit">
               <FaPaperPlane />
             </IconButton>
@@ -102,18 +102,6 @@ const Navbar = () => {
         <Box>
           <Button
             component={RouterLink}
-            to="/homepage"
-            variant="contained"
-            color="primary"
-            size="large"
-            sx={{ ml: 2 }}
-            onClick={() => handleNavigation('/homepage')}
-          >
-            <FaHome size={18} style={{ marginRight: '5px' }} />
-            Home
-          </Button>
-          <Button
-            component={RouterLink}
             to="/"
             variant="contained"
             color="primary"
@@ -121,17 +109,29 @@ const Navbar = () => {
             sx={{ ml: 2 }}
             onClick={() => handleNavigation('/')}
           >
+            <FaHome size={18} style={{ marginRight: '5px' }} />
+            Home
+          </Button>
+          <Button
+            component={RouterLink}
+            to="/createshipment"
+            variant="contained"
+            color="primary"
+            size="large"
+            sx={{ ml: 2 }}
+            onClick={() => handleNavigation('/createshipment')}
+          >
             <FiPackage size={18} style={{ marginRight: '5px' }} />
             Create a Shipment
           </Button>
           <Button
             component={RouterLink}
-            to="/track"
+            to="/trackshipment"
             variant="contained"
             color="primary"
             size="large"
             sx={{ ml: 2 }}
-            onClick={() => handleNavigation('/track')}
+            onClick={() => handleNavigation('/trackshipment')}
           >
             <FaSearch size={18} style={{ marginRight: '5px' }} />
             Track your Shipment
