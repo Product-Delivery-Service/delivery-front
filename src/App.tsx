@@ -11,6 +11,7 @@ import UpdateShipment from './pages/updateshipment';
 import TrackShipment from './pages/trackshipment';
 import Track from './pages/track';
 import HomePage from './pages/home';
+import PrintLabel from './pages/printlabel';
 
 
 
@@ -48,6 +49,10 @@ function App() {
               <Route
                   path="/contact"
                   element={<Contact />}
+              />
+              <Route
+                  path="/print"
+                  element={<PrintLabel />}
               />
               <Route
                   path="/trackshipment"

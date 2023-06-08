@@ -105,7 +105,7 @@ const HomePage = () => {
       </Grid>
 
       <Box mt={4}>
-        <Button variant="contained" color="primary" size="large" onClick={() => handleNavigation('/')}>
+        <Button variant="contained" color="primary" size="large" onClick={() => handleNavigation('/createshipment')}>
           Get Started
         </Button>
       </Box>
