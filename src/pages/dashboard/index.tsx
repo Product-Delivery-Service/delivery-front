@@ -156,7 +156,24 @@ const Dashboard: React.FC = () => {
                 <TableCell>{shipment.id}</TableCell>
                 <TableCell>{shipment.shipmentDate?.toString()?.substring(0,10) + "  " + shipment.shipmentDate?.toString()?.substring(11,16)}</TableCell>
                 <TableCell>{shipment.shipmentName}</TableCell>
-                <TableCell>{shipment.shipmentService}</TableCell>
+                <TableCell > 
+                  <span
+                    style={{
+                      backgroundColor:
+                        shipment.shipmentService === 'Standard Shipping'
+                          ? 'red'
+                          : shipment.shipmentService === 'Express Shipping'
+                          ? 'yellow'
+                          : shipment.shipmentService === 'Overnight Priority'
+                          ? 'green'
+                          : 'inherit',
+                      borderRadius: '0.2rem',
+                      color: '#fff',
+                      padding: '0.25rem',
+                    }}>
+                    {shipment.shipmentService} 
+                  </span>
+                </TableCell>
                 <TableCell>{shipment.trackingCode}</TableCell>
                 <TableCell>{shipment.shipmentState}</TableCell>
                 <TableCell>

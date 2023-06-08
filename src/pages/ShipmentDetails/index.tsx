@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { TextField, Button, Stepper, Step, StepLabel, Container, Grid, Box } from '@mui/material';
+import { TextField, Button, Stepper, Step, StepLabel, Container, Grid, Box, MenuItem } from '@mui/material';
 import { Formik, Form } from 'formik';
 import * as yup from 'yup';
 import { format } from 'date-fns';
 import axios from "axios"
 import { Link } from "react-router-dom";
+import Navbar from '../navbar';
 
 interface FormData {
   senderName: string;
@@ -208,6 +209,16 @@ const MultiStepForm: React.FC = () => {
           </>
         );
       case 2:
+
+        let shipmentPrice: number | string = '';
+        if (values.shipmentService === 'Standard Shipping') {
+          values.shipmentPrice = 100;
+        } else if (values.shipmentService === 'Express Shipping') {
+          values.shipmentPrice = 350;
+        } else if (values.shipmentService === 'Overnight Priority') {
+          values.shipmentPrice = 800;
+        }
+
         return (
           <>
             <Grid item xs={12}>
@@ -265,18 +276,7 @@ const MultiStepForm: React.FC = () => {
                 fullWidth
               />
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                name="shipmentPrice"
-                label="Shipment Price"
-                value={values.shipmentPrice}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={touched.shipmentPrice && !!errors.shipmentPrice}
-                helperText={touched.shipmentPrice && errors.shipmentPrice}
-                fullWidth
-              />
-            </Grid>
+
             <Grid item xs={12}>
               <TextField
                 name="shipmentWeight"
@@ -298,6 +298,20 @@ const MultiStepForm: React.FC = () => {
                 onBlur={handleBlur}
                 error={touched.shipmentService && !!errors.shipmentService}
                 helperText={touched.shipmentService && errors.shipmentService}
+                fullWidth
+                select  // Change to a select input for dropdown
+              >
+                <MenuItem value="Standard Shipping">Standard Shipping</MenuItem>
+                <MenuItem value="Express Shipping">Express Shipping</MenuItem>
+                <MenuItem value="Overnight Priority">Overnight Priority</MenuItem>
+              </TextField>
+            </Grid>
+           <Grid item xs={12}>
+              <TextField
+                name="shipmentPrice"
+                label="Shipment Price"
+                value={values.shipmentPrice}  // Use the determined shipment price
+                InputProps={{ readOnly: true }} // Make the field read-only
                 fullWidth
               />
             </Grid>
@@ -333,7 +347,7 @@ const MultiStepForm: React.FC = () => {
     }
   };
 
-  return (
+  return ( 
     <Container style={{ display:"flex", justifyContent: "center", alignItems: "center", height:"100vh"}} maxWidth="sm">
       <Formik
         initialValues={initialValues}
@@ -393,4 +407,15 @@ const MultiStepForm: React.FC = () => {
   );
 };
 
-export default MultiStepForm;
+//export default MultiStepForm;
+
+const MyComponent: React.FC = () => {
+  return (
+    <>
+      <Navbar />
+      <MultiStepForm />
+    </>
+  );
+};
+
+export default MyComponent;
