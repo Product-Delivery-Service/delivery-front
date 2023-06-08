@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box, Typography, Button, Grid, Toolbar, AppBar, IconButton } from '@mui/material';
+import { Box, Typography, Button, Grid } from '@mui/material';
 import { GiCardboardBox, GiAirplaneDeparture, GiDeliveryDrone } from 'react-icons/gi';
-import { MdLocalShipping, MdHome } from 'react-icons/md';
+import { MdLocalShipping } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
 import Navbar from '../navbar';

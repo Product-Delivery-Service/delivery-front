@@ -210,7 +210,7 @@ const MultiStepForm: React.FC = () => {
         );
       case 2:
 
-        let shipmentPrice: number | string = '';
+        // let shipmentPrice: number | string = '';
         if (values.shipmentService === 'Standard Shipping') {
           values.shipmentPrice = 100;
         } else if (values.shipmentService === 'Express Shipping') {

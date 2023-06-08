@@ -180,7 +180,13 @@ const PrintLabel: React.FC = () => {
             </div>
           </div>
         </Grid>
-        
+        <Grid item>
+          {errorMessage && (
+            <Typography variant="subtitle1" style={{ color: 'red', marginTop: '16px' }}>
+              {errorMessage}
+            </Typography>
+          )}
+        </Grid>
         <Grid item>
         <div>
     {shipment && (
