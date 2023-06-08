@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { LuPackageSearch } from 'react-icons/lu';
 import { Grid, TextField, Button, Typography } from '@mui/material';
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@mui/lab';
@@ -36,7 +35,6 @@ const TrackShipment: React.FC = () => {
 
   };
 
-  const navigate = useNavigate();
   const [trackingCode, setTrackingCode] = useState('');
 
   //const handleTrack = () => {

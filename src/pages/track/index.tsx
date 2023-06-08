@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { LuPackageSearch } from 'react-icons/lu';
-import { AiOutlineHome } from 'react-icons/ai';
-import { Grid, Container, TextField, Button, Typography } from '@mui/material';
+import { Grid, TextField, Button, Typography } from '@mui/material';
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@mui/lab';
 import axios from "axios"
 
@@ -17,7 +15,6 @@ interface Shipment {
 
 const Track: React.FC = () => {
   const API = axios.create({ baseURL: process.env.REACT_APP_MY_API });
-  const navigate = useNavigate();
   const [trackingCode, setTrackingCode] = useState('');
   const [shipment, setShipment] = useState<Shipment | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
