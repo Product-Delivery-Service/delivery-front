@@ -1,169 +1,167 @@
 import React, { useState } from 'react';
-import { Container, Grid, Typography, TextField, Button } from '@mui/material';
-import { LuPackageSearch } from 'react-icons/lu';
-import { AiOutlineHome } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
-import './TrackShipment.css';
+import { LuPackageSearch } from 'react-icons/lu';
+import { Grid, TextField, Button, Typography } from '@mui/material';
+import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@mui/lab';
+import {BiMap} from 'react-icons/bi';
+import axios from 'axios';
+
+import Navbar from '../navbar';
+
+interface Shipment {
+  shipmentName: string;
+  trackingCode: string;
+  shipmentState: string;
+}
 
 const TrackShipment: React.FC = () => {
-  const [shipmentCode, setShipmentCode] = useState('');
+
+  const API = axios.create({ baseURL: process.env.REACT_APP_MY_API });
+  //const navigate = useNavigate();
+  //const [trackingCode, setTrackingCode] = useState('');
+  const [shipment, setShipment] = useState<Shipment | null>(null);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleTrack = async () => {
+    
+    try {
+      const response = await API.post("/command/trackingCode", {trackingCode});
+        console.log("res", response);
+        setShipment(response.data.data);
+      } catch (error: any) {
+        console.log("err", error);
+        setShipment(null);
+      setErrorMessage('No such Shipment exists.');
+      }
+
+  };
+
   const navigate = useNavigate();
+  const [trackingCode, setTrackingCode] = useState('');
 
-  const handleTrackShipment = () => {
-    // Simulating API call and response
-    const response = {
-      id: 1234,
-      code: shipmentCode,
-      status: 'Shipment Delivered',
-    };
-
-    // Update the shipment data with the response
-    setShipment(response);
-  };
-
-  const handleGoBack = () => {
-    navigate('/');
-  };
-
-  const [shipment, setShipment] = useState<{ id: number; code: string; status: string } | null>(null);
+  //const handleTrack = () => {
+    // Add your track shipment logic here
+  //};
 
   return (
-    <Container maxWidth="sm" className="container">
-      <Button variant="outlined" color="primary" onClick={handleGoBack} className="home-button">
-        <AiOutlineHome />
-        Back to Home
-      </Button>
-
-      <Grid container justifyContent="center" alignItems="center" direction="column" spacing={2}>
+    <div>
+      <Navbar />
+      <Grid container justifyContent="center" alignItems="center" direction="column" style={{ marginTop: '40px' }}>
         <Grid item>
-          <div className="purple-container">
-            <LuPackageSearch className="icon" />
-            <Typography variant="h4" className="white-text">
-              Track Shipment
-            </Typography>
-          </div>
-        </Grid>
-
-        <Grid item>
-          <div className="blue-container">
-            <Grid container spacing={2} alignItems="center">
-              <Grid item xs={9}>
-                <TextField
-                  label="Shipment Code"
-                  fullWidth
-                  value={shipmentCode}
-                  onChange={(e) => setShipmentCode(e.target.value)}
-                  inputProps={{
-                    style: { width: '100%' }, // Set the width of the input field
-                    className: 'white-input', // Apply white color to the input text
-                  }}
-                />
-              </Grid>
-              <Grid item xs={3}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleTrackShipment}
-                  className="track-button"
-                  fullWidth
-                >
-                  Track
-                </Button>
-              </Grid>
-            </Grid>
-          </div>
-        </Grid>
-
-        {shipment && (
-          <Grid item>
-            <div className="shipment-details">
-              <Typography variant="h5">Shipment Details</Typography>
-              <Typography>
-                <strong>Shipment Code:</strong> {shipment.code}
-              </Typography>
-              <Typography>
-                <strong>Status:</strong> {shipment.status}
+          <div style={{ backgroundColor: '#42a5f5', padding: '20px', borderRadius: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
+              <LuPackageSearch size={48} color="white" style={{ marginRight: '12px' }} />
+              <Typography variant="h4" style={{ color: 'white' }}>
+                Track Shipment
               </Typography>
             </div>
-          </Grid>
-        )}
+            <Typography variant="subtitle1" style={{ color: 'white', marginBottom: '16px' }}>
+              Enter your tracking code below to track your shipment:
+            </Typography>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+             <TextField
+                label="Enter tracking code"
+                value={trackingCode}
+                onChange={(e) => setTrackingCode(e.target.value)}
+                variant="outlined"
+                fullWidth
+                size="medium"
+                sx={{
+                  background: 'white',
+                  borderRadius: '4px',
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderRadius: '4px'
+                    },
+                    "& input": {
+                      padding: '12px 14px'
+                    }
+                  }
+                }}
+              />
+              <Button variant="contained" color="primary" endIcon={<BiMap />} onClick={handleTrack} style={{ marginLeft: '16px', height: '48px', width: '120px', minHeight: '48px', display: 'flex', alignItems: 'center' }}>
+                Track
+              </Button>
+            </div>
+          </div>
+
+        </Grid>
+                {/* //Shipment details
+                // + Timeline */}
+        <Grid item>
+                {shipment && (
+                <div className="track-details">
+                  <Typography variant="h6">Shipment: {shipment.shipmentName}</Typography>
+                  <Typography>Tracking Code: {shipment.trackingCode}</Typography>
+                  <Timeline position="alternate">
+                    <TimelineItem>
+                      <TimelineSeparator>
+                        <TimelineDot />
+                        <TimelineConnector />
+                      </TimelineSeparator>
+                      <TimelineContent>Shipment Created</TimelineContent>
+                    </TimelineItem>
+
+                {shipment.shipmentState !== 'Shipment Created' && (
+                  <TimelineItem>
+                    <TimelineSeparator>
+                      <TimelineDot />
+                      <TimelineConnector />
+                    </TimelineSeparator>
+                    <TimelineContent>In Transit</TimelineContent>
+                  </TimelineItem>
+                )}
+
+                {shipment.shipmentState !== 'Shipment Created' && shipment.shipmentState !== 'In Transit' && (
+                  <TimelineItem>
+                    <TimelineSeparator>
+                      <TimelineDot />
+                      <TimelineConnector />
+                    </TimelineSeparator>
+                    <TimelineContent>At Company’s Facility</TimelineContent>
+                  </TimelineItem>
+                )}
+
+                {shipment.shipmentState !== 'Shipment Created' && shipment.shipmentState !== 'In Transit' && shipment.shipmentState !== 'At Company\'s Facility' && (
+                  <TimelineItem>
+                    <TimelineSeparator>
+                    <TimelineDot />
+                    <TimelineConnector />
+                    </TimelineSeparator>
+                    <TimelineContent>Out for Delivery</TimelineContent>
+                  </TimelineItem>
+                )}
+
+                {shipment.shipmentState !== 'Shipment Created' && shipment.shipmentState !== 'In Transit' && shipment.shipmentState !== 'At Company\'s Facility' && shipment.shipmentState !== 'Out for Delivery' && (
+                  <TimelineItem>
+                    <TimelineSeparator>
+                    <TimelineDot />
+                    </TimelineSeparator>
+                    <TimelineContent>Delivered</TimelineContent>
+                  </TimelineItem>
+                )}
+
+              </Timeline>
+
+            </div>
+          )}
+            {!shipment && <Typography variant="body1" className="error-message">{errorMessage}</Typography>}
+        </Grid>
       </Grid>
-    </Container>
+      </div>
+
   );
 };
 
 export default TrackShipment;
 
 
-// import React, { useState } from 'react';
-// import { Container, Grid, Typography, TextField, Button } from '@mui/material';
-// import { LuPackageSearch } from 'react-icons/lu';
-// import { AiOutlineHome } from 'react-icons/ai';
-// import { useNavigate } from 'react-router-dom';
-// import './TrackShipment.css';
 
-// const TrackShipment: React.FC = () => {
-//   const [shipmentCode, setShipmentCode] = useState('');
-//   const navigate = useNavigate();
 
-//   const handleTrackShipment = () => {
-//     // Track shipment logic goes here
-//   };
 
-//   const handleGoBack = () => {
-//     navigate('/');
-//   };
 
-//   return (
-//     <Container maxWidth="sm" className="container">
-//       <Button variant="outlined" color="primary" onClick={handleGoBack} className="home-button">
-//         <AiOutlineHome />
-//         Back to Home
-//       </Button>
 
-//       <Grid container justifyContent="center" alignItems="center" direction="column" spacing={2}>
-//         <Grid item>
-//           <div className="purple-container">
-//             <LuPackageSearch className="icon" />
-//             <Typography variant="h4" className="white-text">
-//               Track Shipment
-//             </Typography>
-//           </div>
-//         </Grid>
 
-//         <Grid item>
-//           <div className="blue-container">
-//             <Grid container spacing={2} alignItems="center">
-//               <Grid item xs={9}>
-//                 <TextField
-//                   label="Shipment Code"
-//                   fullWidth
-//                   value={shipmentCode}
-//                   onChange={(e) => setShipmentCode(e.target.value)}
-//                   inputProps={{
-//                     style: { width: '100%' }, // Set the width of the input field
-//                     className: 'white-input', // Apply white color to the input text
-//                   }}
-//                 />
-//               </Grid>
-//               <Grid item xs={3}>
-//                 <Button
-//                   variant="contained"
-//                   color="primary"
-//                   onClick={handleTrackShipment}
-//                   className="track-button"
-//                   fullWidth
-//                 >
-//                   Track
-//                 </Button>
-//               </Grid>
-//             </Grid>
-//           </div>
-//         </Grid>
-//       </Grid>
-//     </Container>
-//   );
-// };
 
-// export default TrackShipment;
+
 

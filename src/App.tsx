@@ -10,6 +10,8 @@ import ShipmentDetails from "./pages/ShipmentDetails"
 import UpdateShipment from './pages/updateshipment';
 import TrackShipment from './pages/trackshipment';
 import Track from './pages/track';
+import HomePage from './pages/home';
+import PrintLabel from './pages/printlabel';
 
 
 
@@ -37,11 +39,20 @@ function App() {
 
   return (
           <Routes>
-              <Route path="/" element={<ShipmentDetails/>} />
+            <Route
+                  path="/"
+                  element={< HomePage/>}
+              />
+
+              <Route path="/createshipment" element={<ShipmentDetails/>} />
 
               <Route
                   path="/contact"
                   element={<Contact />}
+              />
+              <Route
+                  path="/print"
+                  element={<PrintLabel />}
               />
               <Route
                   path="/trackshipment"

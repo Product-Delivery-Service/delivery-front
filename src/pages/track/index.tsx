@@ -3,17 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { LuPackageSearch } from 'react-icons/lu';
 import { AiOutlineHome } from 'react-icons/ai';
 import { Grid, Container, TextField, Button, Typography } from '@mui/material';
-//import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@mui/lab';
-// import Timeline from '@mui/lab/Timeline';
-// import TimelineItem from '@mui/lab/TimelineItem';
-// import TimelineSeparator from '@mui/lab/TimelineSeparator';
-// import TimelineConnector from '@mui/lab/TimelineConnector';
-// import TimelineContent from '@mui/lab/TimelineContent';
-// import TimelineDot from '@mui/lab/TimelineDot';
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@mui/lab';
 import axios from "axios"
 
 import './Track.css';
+import Navbar from '../navbar';
 
 interface Shipment {
   shipmentName: string;
@@ -43,29 +37,16 @@ const Track: React.FC = () => {
   };
 
   return (
+    <div > <Navbar /> 
     <div className="track-container">
-      {/* <Container maxWidth="sm" className="home-container">
-      <div className="back-container" onClick={() => navigate('/')}> */}
-        {/* <span className="back-icon">
-          <AiOutlineHome />
-        </span>
-        <span className="back-text">Back to home</span> */}
-        {/* <Button variant="outlined" color="primary" onClick={() => navigate('/')} className="home-button">
-        <AiOutlineHome />
-        Back to Home
-      </Button>
-      </div>
-      </Container> */}
-
-      <Container  className="home-container" >
+      {/* <Container  className="home-container" >
         <div className="back-container" onClick={() => navigate('/')}>
-          {/* <span className="back-icon"> <AiOutlineHome /> </span> <span className="back-text">Back to home</span> */}
           <Button variant="outlined" color="primary" onClick={() => navigate('/')} className="home-button">
             <AiOutlineHome />
               Back to Home
           </Button>
         </div>
-      </Container>
+      </Container> */}
 
       <div className="track-header">
       <Grid container justifyContent="center" alignItems="center" direction="column" spacing={2}>
@@ -78,13 +59,7 @@ const Track: React.FC = () => {
           </div>
         </Grid>
       </Grid>
-      
-        {/* <span className="track-icon">
-          <LuPackageSearch />
-        </span>
-        <Typography variant="h4" className="track-text">
-          Track Shipment
-        </Typography> */}
+
       </div>
       <div className="track-form">
         <TextField
@@ -149,11 +124,12 @@ const Track: React.FC = () => {
       <TimelineContent>Delivered</TimelineContent>
     </TimelineItem>
   )}
-</Timeline>
+  </Timeline>
 
         </div>
       )}
       {!shipment && <Typography variant="body1" className="error-message">{errorMessage}</Typography>}
+    </div>
     </div>
   );
 };
