@@ -4,6 +4,7 @@ import { Grid, TextField, Button, Typography } from '@mui/material';
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@mui/lab';
 import {BiMap} from 'react-icons/bi';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 import Navbar from '../navbar';
 
@@ -16,30 +17,42 @@ interface Shipment {
 const TrackShipment: React.FC = () => {
 
   const API = axios.create({ baseURL: process.env.REACT_APP_MY_API });
-  //const navigate = useNavigate();
-  //const [trackingCode, setTrackingCode] = useState('');
+
   const [shipment, setShipment] = useState<Shipment | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleTrack = async () => {
+  // const handleTrack = async () => {
     
-    try {
-      const response = await API.post("/command/trackingCode", {trackingCode});
-        console.log("res", response);
-        setShipment(response.data.data);
-      } catch (error: any) {
-        console.log("err", error);
-        setShipment(null);
-      setErrorMessage('No such Shipment exists.');
-      }
+  //   try {
+  //     const response = await API.post("/command/trackingCode", {trackingCode});
+  //       console.log("res", response);
+  //       setShipment(response.data.data);
+  //       toast.success('Shipment found!'); 
+  //     } catch (error: any) {
+  //       console.log("err", error);
+  //       setShipment(null);
+  //     setErrorMessage('No such Shipment exists.');
+  //     toast.error('No such Shipment exists!');
+  //     }
 
+  // };
+  const handleTrack = async () => {
+    const response = await API.post("/command/trackingCode", { trackingCode });
+    console.log("res", response);
+  
+    if (response.data.data) {
+      setShipment(response.data.data);
+      toast.success('Shipment found!'); // Show success toast
+    } else {
+      setShipment(null);
+      setErrorMessage('No such Shipment exists.');
+      toast.error('Shipment not found!'); // Show error toast
+    }
   };
 
   const [trackingCode, setTrackingCode] = useState('');
 
-  //const handleTrack = () => {
-    // Add your track shipment logic here
-  //};
+
 
   return (
     <div>
@@ -84,8 +97,7 @@ const TrackShipment: React.FC = () => {
           </div>
 
         </Grid>
-                {/* //Shipment details
-                // + Timeline */}
+
         <Grid item>
                 {shipment && (
                 <div className="track-details">

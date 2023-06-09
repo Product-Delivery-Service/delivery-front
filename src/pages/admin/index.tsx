@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Paper } from '@mui/material';
+import { TextField, Button, Typography, Paper, IconButton, Box } from '@mui/material';
 import { styled } from '@mui/system';
 import axios from "axios"
-import { useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { AppBar, Toolbar } from '@mui/material';
+import { FaPaperPlane } from 'react-icons/fa';
+
 
 const StyledContainer = styled('div')({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  minHeight: '100vh',
+  height: '100vh',
   background: '#f5f5f5',
+  //marginTop: '64px',
 });
 
 const StyledPaper = styled(Paper)({
@@ -53,7 +57,9 @@ const StyledButton = styled(Button)({
   },
 });
 
-const Admin = () => {
+// const Admin = () => {
+const AuthBox = () => {
+
   const API = axios.create({ baseURL: process.env.REACT_APP_MY_API });
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -96,7 +102,23 @@ const Admin = () => {
       }
   };
 
+
   return (
+    <div>
+      <AppBar position="static">
+        <Toolbar>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Button component={RouterLink} to="/" color="inherit">
+                <IconButton color="inherit">
+                  <FaPaperPlane />
+                </IconButton>
+                <Typography variant="h6" component="span" sx={{ ml: 2, textDecoration: 'none', color: 'inherit' }}>
+                  Delivery App
+                </Typography>
+              </Button>
+            </Box>
+        </Toolbar>
+      </AppBar>
     <StyledContainer>
       <StyledPaper elevation={3}>
         <StyledTitle variant="h4">Authentification Administrateur</StyledTitle>
@@ -126,6 +148,18 @@ const Admin = () => {
         </StyledForm>
       </StyledPaper>
     </StyledContainer>
+    </div>
+  );
+};
+
+//export default AuthBox;
+//export default Admin;
+
+const Admin = () => {
+  return (
+    <div>
+      <AuthBox />
+    </div>
   );
 };
 

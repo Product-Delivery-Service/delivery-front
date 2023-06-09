@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
-import { AiOutlineHome } from 'react-icons/ai';
-import { useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import './Dashboard.css';
 import axios from "axios"
+import { AppBar, Toolbar, Typography, IconButton, Box } from '@mui/material';
+import { FaPaperPlane } from 'react-icons/fa';
+import { BiLogOut } from 'react-icons/bi';
+import { BsEnvelope, BsBoxSeam } from 'react-icons/bs';
+import toast from 'react-hot-toast';
+
+
 
 interface Message {
   id: number;
@@ -29,8 +35,10 @@ const Dashboard: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const handleGoBack: () => void = () => {
-    navigate('/');
+  const handleLogout = () => {
+    // Add your logout logic here
+    // For example, clear user session, navigate to the login page, etc.
+    navigate('/admin');
   };
 
   const [currentButton, setCurrentButton] = useState<string>('Shipments');
@@ -40,20 +48,17 @@ const Dashboard: React.FC = () => {
   const handleButtonClick = (buttonName: string) => {
     console.log(buttonName)
     setCurrentButton(buttonName);
-    // Set the static data based on the button clicked
     if (buttonName === 'Messages') {
-      // setTableData(messagesData);
+
       getMessages()
 
     } else if (buttonName === 'Shipments') {
-      // setTableData(shipmentsData);
       getShipments()
     }
   };
 
   const handleStateChange = (shipmentId: number, newState: string) => {
     console.log(newState)
-    // Update the state of the selected shipment in the tableData state
     const updatedTableData = tableData.map((item: Message | Shipment) => {
       if ('shipmentState' in item && item.id === shipmentId) {
         return { ...item, shipmentState: newState } as Shipment;
@@ -75,8 +80,10 @@ const Dashboard: React.FC = () => {
       try {
         const response = await API.post("/command/update", {shipmentState: updatedShipment.shipmentState, id: shipmentId});
           console.log("res", response);
+          toast.success('Shipment Updated');
         } catch (error: any) {
           console.log("err", error);
+          toast.error('An Error occurred.');
         }
     }
   };
@@ -104,7 +111,6 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     getShipments()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderTable = () => {
@@ -206,32 +212,51 @@ const Dashboard: React.FC = () => {
     return null;
   };
 
-  // return (
-  //   <div className="dashboard-container">
-  //     <div className="button-container">
-  //       <Button variant="contained" color="primary" onClick={() => handleButtonClick('Messages')}>
-  //         Messages
-  //       </Button>
-  //       <Button variant="contained" color="primary" onClick={() => handleButtonClick('Shipments')}>
-  //         Shipments
-  //       </Button>
-  //     </div>
-  //     {renderTable()}
-  //   </div>
-  // );
   return (
     <div className="dashboard-container">
-        <div className='home-container'>
+        <AppBar position="static">
+          <Toolbar>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Button component={RouterLink} to="/" color="inherit">
+                <IconButton color="inherit">
+                  <FaPaperPlane />
+                </IconButton>
+                <Typography variant="h6" component="span" sx={{ ml: 2, textDecoration: 'none', color: 'inherit' }}>
+                  Delivery App
+                </Typography>
+              </Button>
+            </Box>
+            <Box flexGrow={1}></Box>
+              <Button color="inherit" onClick={handleLogout}>
+                <IconButton color="inherit">
+                  <BiLogOut />
+                </IconButton>
+                <Typography variant="h6" component="span" sx={{ ml: 2, textDecoration: 'none', color: 'inherit' }}>
+                  Logout
+                </Typography>
+              </Button>
+          </Toolbar>
+        </AppBar>
+    <br />
+
+        {/* <div className='home-container'>
           <Button variant="outlined" color="primary" onClick={handleGoBack} className="home-button">
           <AiOutlineHome />
             Back to Home
           </Button>
-        </div>
+        </div> */}
         <div className="button-container">
           <Button variant="contained" color="primary" onClick={() => handleButtonClick('Shipments')}>
+            <span style={{ marginRight: '8px' }}>
+              <BsBoxSeam/>
+            </span>
             Shipments
           </Button>
+
           <Button variant="contained" color="primary" onClick={() => handleButtonClick('Messages')}>
+            <span style={{ marginRight: '8px' }}>
+              <BsEnvelope />
+            </span>
             Messages
           </Button>
         </div>

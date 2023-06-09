@@ -12,6 +12,7 @@ import Navbar from '../navbar';
 import { jabakLahDeliveryBase64 } from './imageData';
 import { saveAs } from 'file-saver';
 import { pdf } from '@react-pdf/renderer';
+import toast from 'react-hot-toast';
 
 interface Shipment {
     //Sender Info
@@ -123,19 +124,33 @@ const PrintLabel: React.FC = () => {
         saveAs(blob, fileName);
       };
 
-    const handleTrack = async () => {
+    // const handleTrack = async () => {
       
-      try {
-        const response = await API.post("/command/trackingCode", {trackingCode});
-          console.log("res", response);
-          setShipment(response.data.data);
-        } catch (error: any) {
-          console.log("err", error);
-          setShipment(null);
-        setErrorMessage('No such Shipment exists.');
-        }
+    //   try {
+    //     const response = await API.post("/command/trackingCode", {trackingCode});
+    //       console.log("res", response);
+    //       setShipment(response.data.data);
+    //     } catch (error: any) {
+    //       console.log("err", error);
+    //       setShipment(null);
+    //     setErrorMessage('No such Shipment exists.');
+    //     }
   
+    // };
+    const handleTrack = async () => {
+      const response = await API.post("/command/trackingCode", { trackingCode });
+      console.log("res", response);
+    
+      if (response.data.data) {
+        setShipment(response.data.data);
+        toast.success('Shipment found!'); // Show success toast
+      } else {
+        setShipment(null);
+        setErrorMessage('No such Shipment exists.');
+        toast.error('Shipment not found!'); // Show error toast
+      }
     };
+
 
     useEffect(() => {
         const fetchData = async () => {

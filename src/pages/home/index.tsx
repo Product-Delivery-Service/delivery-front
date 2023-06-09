@@ -3,7 +3,8 @@ import { Box, Typography, Button, Grid } from '@mui/material';
 import { GiCardboardBox, GiAirplaneDeparture, GiDeliveryDrone } from 'react-icons/gi';
 import { MdLocalShipping } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
-
+import { AiOutlineUserSwitch } from 'react-icons/ai';
+import { BsFillBoxSeamFill } from 'react-icons/bs';
 import Navbar from '../navbar';
 
 const HomePage = () => {
@@ -105,7 +106,34 @@ const HomePage = () => {
       </Grid>
 
       <Box mt={4}>
-        <Button variant="contained" color="primary" size="large" onClick={() => handleNavigation('/createshipment')}>
+        {/* <Button variant="contained" color="primary" size="large" onClick={() => handleNavigation('/createshipment')}>
+          Get Started
+        </Button>
+        <Button variant="contained" color="primary" size="large" onClick={() => handleNavigation('/admin')}>
+          Switch to Agent
+        </Button> */}
+        <Button
+          style={{ marginRight: '10px' }}
+          variant="contained"
+          color="primary"
+          size="large"
+          onClick={() => handleNavigation('/admin')}
+        >
+          <span style={{ marginRight: '5px' }}>
+            <AiOutlineUserSwitch />
+          </span>
+          Switch to Agent
+        </Button>
+        <Button
+          style={{ marginLeft: '10px' }}
+          variant="contained"
+          color="primary"
+          size="large"
+          onClick={() => handleNavigation('/createshipment')}
+        >
+          <span style={{ marginRight: '5px' }}>
+            <BsFillBoxSeamFill />
+          </span>
           Get Started
         </Button>
       </Box>

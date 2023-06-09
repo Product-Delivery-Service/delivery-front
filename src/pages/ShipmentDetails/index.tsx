@@ -91,6 +91,7 @@ const MultiStepForm: React.FC = () => {
         toast.success('Shipment submitted successfully!');
       } catch (error: any) {
         console.log("err", error);
+        toast.error('An Error occurred.');
       }
   };
 
