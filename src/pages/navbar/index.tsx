@@ -1,6 +1,6 @@
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Box, Button, Toolbar, AppBar, Typography, IconButton } from '@mui/material';
-import { FaHome, FaSearch } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
 import { FiPackage } from 'react-icons/fi';
 import { FaPaperPlane } from 'react-icons/fa';
 import { AiFillPrinter } from 'react-icons/ai';
