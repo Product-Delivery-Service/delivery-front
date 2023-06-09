@@ -7,9 +7,9 @@ import NotFound  from "./pages/notfound"
 import Contact from "./pages/contact"
 import ShipmentDetails from "./pages/ShipmentDetails"
 
-import UpdateShipment from './pages/updateshipment';
+//import UpdateShipment from './pages/updateshipment';
 import TrackShipment from './pages/trackshipment';
-import Track from './pages/track';
+//import Track from './pages/track';
 import HomePage from './pages/home';
 import PrintLabel from './pages/printlabel';
 
@@ -48,10 +48,10 @@ function App() {
       <Route path="/contact" element={<Contact />} />
       <Route path="/print" element={<PrintLabel />} />
       <Route path="/trackshipment" element={<TrackShipment />} />
-      <Route path="/track" element={<Track />} />
+      {/* <Route path="/track" element={<Track />} /> */}
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/admin" element={<Admin />} />
-      <Route path="/updateshipment" element={<UpdateShipment />} />
+      {/* <Route path="/updateshipment" element={<UpdateShipment />} /> */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   </>
