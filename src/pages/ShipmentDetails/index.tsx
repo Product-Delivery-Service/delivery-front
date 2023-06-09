@@ -6,6 +6,8 @@ import { format } from 'date-fns';
 import axios from "axios"
 import { Link } from "react-router-dom";
 import Navbar from '../navbar';
+import { toast } from 'react-hot-toast';
+
 
 interface FormData {
   senderName: string;
@@ -86,6 +88,7 @@ const MultiStepForm: React.FC = () => {
       const response = await API.post("/command", values, { withCredentials: true });
         console.log("res", response);
         setTrackingCode(response.data.data.trackingCode)
+        toast.success('Shipment submitted successfully!');
       } catch (error: any) {
         console.log("err", error);
       }
