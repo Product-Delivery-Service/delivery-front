@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, } from 'react';
 import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import './Dashboard.css';
@@ -109,9 +109,9 @@ const Dashboard: React.FC = () => {
       }
   }
 
-  useEffect(() => {
-    getShipments()
-  }, []);
+  // useEffect(() => {
+  //   getShipments()
+  // }, [[getShipments]]);
 
   const renderTable = () => {
     if (currentButton === 'Messages') {
@@ -239,12 +239,7 @@ const Dashboard: React.FC = () => {
         </AppBar>
     <br />
 
-        {/* <div className='home-container'>
-          <Button variant="outlined" color="primary" onClick={handleGoBack} className="home-button">
-          <AiOutlineHome />
-            Back to Home
-          </Button>
-        </div> */}
+        
         <div className="button-container">
           <Button variant="contained" color="primary" onClick={() => handleButtonClick('Shipments')}>
             <span style={{ marginRight: '8px' }}>
