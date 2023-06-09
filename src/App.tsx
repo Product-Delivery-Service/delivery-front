@@ -13,6 +13,8 @@ import Track from './pages/track';
 import HomePage from './pages/home';
 import PrintLabel from './pages/printlabel';
 
+import { Toaster } from 'react-hot-toast';
+
 
 
 function App() {
@@ -38,44 +40,21 @@ function App() {
     // }, []);
 
   return (
-          <Routes>
-            <Route
-                  path="/"
-                  element={< HomePage/>}
-              />
-
-              <Route path="/createshipment" element={<ShipmentDetails/>} />
-
-              <Route
-                  path="/contact"
-                  element={<Contact />}
-              />
-              <Route
-                  path="/print"
-                  element={<PrintLabel />}
-              />
-              <Route
-                  path="/trackshipment"
-                  element={<TrackShipment />}
-              />
-              <Route
-                  path="/track"
-                  element={<Track />}
-              />
-              <Route
-                  path="/dashboard"
-                  element={<Dashboard />}
-              />
-              <Route
-                  path="/admin"
-                  element={<Admin />}
-              />
-              <Route
-                  path="/updateshipment"
-                  element={< UpdateShipment/>}
-              />
-              <Route path="*" element={<NotFound />} />
-          </Routes>
+    <>
+    <Toaster />
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/createshipment" element={<ShipmentDetails />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/print" element={<PrintLabel />} />
+      <Route path="/trackshipment" element={<TrackShipment />} />
+      <Route path="/track" element={<Track />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/admin" element={<Admin />} />
+      <Route path="/updateshipment" element={<UpdateShipment />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  </>
   );
 }
 

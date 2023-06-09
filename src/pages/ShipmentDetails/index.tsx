@@ -330,7 +330,7 @@ const MultiStepForm: React.FC = () => {
               <Button style={{marginRight: "50px"}} variant="contained" color="primary" onClick={() => navigator.clipboard.writeText(trackingCode)}>
                 Copy Code
               </Button>
-              <Link to="/track">
+              <Link to="/trackshipment">
               <Button style={{marginRight: "50px"}} variant="outlined" color="primary">
                 Track Shipment
               </Button>
