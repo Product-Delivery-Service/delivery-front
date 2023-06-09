@@ -2,6 +2,12 @@ import React, { useState } from 'react';
 import { TextField, Button, Typography, Paper } from '@mui/material';
 import { styled } from '@mui/system';
 import axios from "axios"
+import Navbar from '../navbar';
+import { BsEnvelopeCheck } from 'react-icons/bs';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+
+
 
 const StyledContainer = styled('div')({
   display: 'flex',
@@ -50,10 +56,25 @@ const StyledButton = styled(Button)({
   '&:hover': {
     background: '#0069d9',
   },
+  '& .MuiButton-label': {
+    display: 'flex',
+    alignItems: 'center',
+    marginRight: '8px',
+  },
+  '& .icon-wrapper': {
+    marginRight: '8px', // Add margin-right to the icon wrapper span for spacing
+  },
 });
 
 const ContactPage = () => {
   
+  const navigate = useNavigate();
+
+  // const handleSubmit = () => {
+  //   navigate('/');
+  //   toast.success('Message sent');
+  // };
+
   const API = axios.create({ baseURL: process.env.REACT_APP_MY_API });
 
   const [formData, setFormData] = useState({
@@ -117,6 +138,8 @@ const ContactPage = () => {
     try {
       const response = await API.post("/message", formData);
         console.log("res", response);
+        navigate('/'); // navigate to the home page
+        toast.success('Message sent'); // display the notification
       } catch (error: any) {
         console.log("err", error);
       }
@@ -124,6 +147,8 @@ const ContactPage = () => {
   };
 
   return (
+    <div>
+    <Navbar />
     <StyledContainer>
       <StyledPaper elevation={3}>
         <StyledTitle variant="h4">Contact</StyledTitle>
@@ -176,12 +201,16 @@ const ContactPage = () => {
             value={formData.message}
             onChange={handleInputChange}
           />
-          <StyledButton variant="contained" type="submit">
-            Submit
+          <StyledButton variant="contained" type="submit" onClick={handleSubmit}>
+            <span className="icon-wrapper">
+              <BsEnvelopeCheck />
+            </span>
+            <span>Submit Message</span>
           </StyledButton>
         </StyledForm>
       </StyledPaper>
     </StyledContainer>
+    </div>
   );
 };
 

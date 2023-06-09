@@ -4,11 +4,14 @@ import { Grid, Typography } from '@mui/material';
 import { AiOutlinePrinter } from 'react-icons/ai';
 import { BsPrinter } from 'react-icons/bs';
 import { Document, Page, Text, View, PDFDownloadLink } from '@react-pdf/renderer';
+import { TbFileDownload } from 'react-icons/tb'; 
 import QRCode from 'qrcode';
 import { Image } from '@react-pdf/renderer';
 import axios from 'axios';
 import Navbar from '../navbar';
 import { jabakLahDeliveryBase64 } from './imageData';
+import { saveAs } from 'file-saver';
+import { pdf } from '@react-pdf/renderer';
 
 interface Shipment {
     //Sender Info
@@ -109,7 +112,17 @@ const PrintLabel: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [qrCodeDataURL, setQrCodeDataURL] = useState('');
 
-  
+    const generatePdfDocument = async (
+        shipment: Shipment,
+        qrCodeDataURL: string,
+        fileName: string
+      ) => {
+        const blob = await pdf(
+          <ShipmentPDF shipment={shipment} qrCodeDataURL={qrCodeDataURL} />
+        ).toBlob();
+        saveAs(blob, fileName);
+      };
+
     const handleTrack = async () => {
       
       try {
@@ -137,6 +150,7 @@ const PrintLabel: React.FC = () => {
         fetchData();
       }, [trackingCode]);
   
+
   return (
     <div>
       <div>
@@ -187,32 +201,28 @@ const PrintLabel: React.FC = () => {
             </Typography>
           )}
         </Grid>
+        <br />
         <Grid item>
         <div>
     {shipment && (
       <div>
-        <Typography variant="h6">Shipment Details:</Typography>
-        <Typography>Shipment Date: {shipment.shipmentDate.toString()}</Typography>
-        <Typography>Shipment Name: {shipment.shipmentName}</Typography>
-        <Typography>Shipment Price: {shipment.shipmentPrice}</Typography>
-        <Typography>Shipment Weight: {shipment.shipmentWeight}</Typography>
-        <Typography>Shipment Service: {shipment.shipmentService}</Typography>
-        <Typography>Tracking Code: {shipment.trackingCode}</Typography>
-
+        
         <div>
         <View style={{ marginTop: 16 }}>
-            <PDFDownloadLink
-              document={<ShipmentPDF shipment={shipment} qrCodeDataURL={qrCodeDataURL} />}
-              fileName="shipment.pdf"
-              style={{
-                textDecoration: 'none',
-                color: 'blue',
-              }}
-            >
-              {({ loading }) =>
-                loading ? 'Generating PDF...' : 'Download Shipment PDF'
-              }
-            </PDFDownloadLink>
+        <Button
+        onClick={() =>
+          generatePdfDocument(
+            shipment,
+            qrCodeDataURL,
+            `shipment_${shipment.trackingCode}.pdf`
+          )
+        }
+        variant="contained"
+        color="primary"
+        startIcon={<TbFileDownload />}
+      >
+        Download Shipment PDF
+      </Button>
           </View>
         </div>
 
