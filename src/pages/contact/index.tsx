@@ -142,6 +142,7 @@ const ContactPage = () => {
         toast.success('Message sent'); // display the notification
       } catch (error: any) {
         console.log("err", error);
+        toast.error('An Error occurred.');
       }
     console.log(formData);
   };
