@@ -3,7 +3,7 @@ import { Button, TextField } from '@mui/material';
 import { Grid, Typography } from '@mui/material';
 import { AiOutlinePrinter } from 'react-icons/ai';
 import { BsPrinter } from 'react-icons/bs';
-import { Document, Page, Text, View, PDFDownloadLink } from '@react-pdf/renderer';
+import { Document, Page, Text, View } from '@react-pdf/renderer';
 import { TbFileDownload } from 'react-icons/tb'; 
 import QRCode from 'qrcode';
 import { Image } from '@react-pdf/renderer';
